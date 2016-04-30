@@ -173,7 +173,7 @@ DATABASES = {
 
     if [ "$?" == 1 ]
     then
-        mysql_issue
+        echo " ... continuing ..."
     fi
 
     echo "Creating new database $dbname ..."
