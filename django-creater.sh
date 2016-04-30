@@ -2,12 +2,23 @@
 
 subject=$1
 
+DJANGO_DEV_SERVER_HOST="127.0.0.1:8000"
 PYENV_PATH=~/.pyenv/libexec/pyenv
-BROWSER_PATH="/usr/bin/chromium-browser"
-EDITOR_PATH=~/bin/subl
 
-MYSQL_SVC_RS_CMD="sudo service mysqld restart"
-PG_SVC_RS_CMD="sudo service postgresql-9.4 restart"
+POSTGRESQL_SERVICE_NAME="postgresql-9.4"
+
+# For RH based distros:
+MYSQL_SERVICE_NAME="mysqld"
+
+# For Debian based distros:
+#MYSQL_SERVICE_NAME="mysql"
+
+# Entirely optional if you want a browser and editor to start up.
+# BROWSER_PATH="/usr/bin/chromium-browser"
+# EDITOR_PATH=~/bin/subl
+
+MYSQL_SVC_RS_CMD="sudo service $MYSQL_SERVICE_NAME restart"
+PG_SVC_RS_CMD="sudo service $POSTGRESQL_SERVICE_NAME restart"
 
 function create_project {
     echo
@@ -16,7 +27,7 @@ function create_project {
 
     if [ -d $project_name ]
     then
-        echo "A directory called $project_name already exists."
+        echo "A directory called '$project_name' already exists."
         echo "Exiting."
         exit 1
     fi
@@ -50,6 +61,18 @@ function setup_python {
         then
             pyenv_not_installed
         fi
+
+        if [ "$?" == 1 ]
+        then
+            echo
+            echo "Unable to properly install Python $python_version"
+            echo "Ran # pyenv install $python_version when the error occurred."
+            echo "Please investigate and retry."
+            cd ..
+            rm -rf $project_name
+            exit 1
+        fi
+
         pyenv global $python_version
 
         echo "Creating a virtualenv for this project ..."
@@ -63,9 +86,10 @@ function setup_python {
 
 function install_packages {
     echo
-    echo "Ok... we are going to install Django and a database module of your choice right now."
+    echo "Installing Django and a database module of your choice."
     while [ 1 ]
     do
+        echo
         echo "For databases you have the following options:"
         echo "-- mysqlclient (MySQL)"
         echo "-- psycopg2 (Postgresql)"
@@ -83,12 +107,14 @@ function install_packages {
                 break
             ;;
         esac
-
-        echo "Type in either: mysqlclient, psycopg2 or nothing (for SQLite)..."
+        echo
+        echo "Type in either: mysqlclient, psycopg2 or press enter "
+        echo "(for SQLite)..."
     done
 
     echo
     echo "First updating pip to make sure we're running with newest package..."
+
     pip install pip --upgrade
 
     pip install django $db_type
@@ -281,11 +307,11 @@ function setup_django {
     ./manage.py createsuperuser
 
     echo "Now starting the Django dev server:"
-    ./manage.py runserver
+    ./manage.py runserver $DJANGO_DEV_SERVER_HOST
 
-    #$EDITOR_PATH .
+    $EDITOR_PATH . 2>/dev/null
 
-    #$BROWSER_PATH "http://localhost:8000/admin/"
+    $BROWSER_PATH "http://localhost:8000/admin/" 2>/dev/null
 }
 
 case $subject in
