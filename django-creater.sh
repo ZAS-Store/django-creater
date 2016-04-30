@@ -23,6 +23,15 @@ function create_project {
     cd $project_name
 }
 
+function pyenv_not_installed {
+    echo "Pyenv does not appear to be installed or is inaccessible"
+    echo "on your '$PATH'."
+    echo "Make sure it's installed properly."
+    echo "Exiting."
+    rm -rf $project_name
+    exit 1
+}
+
 function setup_python {
     echo
     if [ -f $PYENV_PATH ]
@@ -32,6 +41,10 @@ function setup_python {
         read python_version
         echo "Installing ${python_version} ..."
         pyenv install $python_version
+        if [ "$?" == 127 ]
+        then
+            pyenv_not_installed
+        fi
         pyenv global $python_version
 
         echo "Creating a virtualenv for this project ..."
@@ -39,11 +52,7 @@ function setup_python {
         pyenv local $project_name
 
     else
-        echo "Pyenv does not appear to be installed."
-        echo "You really need it. Install it first."
-        echo "Exiting."
-        rm -rf $project_name
-        exit 1
+        pyenv_not_installed
     fi
 }
 
