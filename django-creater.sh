@@ -144,28 +144,32 @@ os.path.join(BASE_DIR, 'static'),
 )
     " >> $project_name/$project_name/settings.py
 
-    echo "Enter your database server hostname: "
-    read dbhost
+    if [ "$db_type" != "" ]
+    then
 
-    echo "Enter your database server port: "
-    read dbport
+        echo "Enter your database server hostname: "
+        read dbhost
 
-    echo "Enter your database name: "
-    read dbname
+        echo "Enter your database server port: "
+        read dbport
 
-    echo "Enter your database username: "
-    read dbuser
+        echo "Enter your database name: "
+        read dbname
 
-    echo "Enter your database password: "
-    read dbpasswd
+        echo "Enter your database username: "
+        read dbuser
 
-    if [ $db_type == "psycopg2" ]
+        echo "Enter your database password: "
+        read dbpasswd
+    fi
+
+    if [ "$db_type" == "psycopg2" ]
     then
         echo "Setting up Postgresql ..."
         setup_postgresql
     fi
 
-    if [ $db_type == "mysqlclient" ]
+    if [ "$db_type" == "mysqlclient" ]
     then
         echo "Setting up MySQL ..."
         setup_mysql
