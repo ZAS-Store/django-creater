@@ -27,6 +27,7 @@ function create_project {
 }
 
 function pyenv_not_installed {
+    echo
     echo "Pyenv does not appear to be installed or is inaccessible"
     echo 'on your $PATH.'
     echo "Make sure it's installed properly."
@@ -86,6 +87,7 @@ function install_packages {
         echo "Type in either: mysqlclient, psycopg2 or nothing (for SQLite)..."
     done
 
+    echo
     echo "First updating pip to make sure we're running with newest package..."
     pip install pip --upgrade
 
@@ -93,7 +95,8 @@ function install_packages {
 
     if [ "$?" == 1 ]
     then
-        echo "Unable to install django and/or $db_type module. Please investigate."
+        echo "Unable to install django and/or $db_type module. "
+        echo "Please investigate. Exiting."
         cd ..
         rm -rfv $project_name
         exit 1
@@ -105,6 +108,7 @@ function install_packages {
 }
 
 function postgresql_issue {
+    echo
     echo "There appears to be a problem with your Postgresql setup."
     echo "Check the following: "
     echo "* Correct postgresql service name "
@@ -160,6 +164,7 @@ DATABASES = {
 }
 
 function mysql_issue {
+    echo
     echo "There appears to be a problem with your MySQL service."
     echo "Check to see if it's starting. Also keep in mind that "
     echo "this script expects the MySQL root user to have a password."
@@ -221,6 +226,7 @@ DATABASES = {
 
 function create_django_project {
     echo
+    echo "Creating Django project '$project_name' ..."
     django-admin.py startproject $project_name
 
     mkdir -p $project_name/static/css $project_name/static/img $project_name/static/js
@@ -233,7 +239,9 @@ os.path.join(BASE_DIR, 'static'),
 
     if [ "$db_type" != "" ]
     then
-
+        echo
+        echo "INFO: Keep in mind that if you are using Unix sockets "
+        echo "as a connection, use 127.0.0.1 as the hostname."
         echo "Enter your database server hostname: "
         read dbhost
 
