@@ -57,12 +57,13 @@ function setup_python {
         read python_version
         echo "Installing ${python_version} ..."
         pyenv install $python_version
+
+        echo "STATUS IS $?"
+
         if [ "$?" == 127 ]
         then
             pyenv_not_installed
-        fi
-
-        if [ "$?" == 1 ]
+        elif [ "$?" == 2 ]
         then
             echo
             echo "Unable to properly install Python $python_version"
