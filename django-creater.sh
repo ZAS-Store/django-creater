@@ -162,6 +162,7 @@ DATABASES = {
         exit 1
     elif [ "$?" == 1 ]
     then
+        echo "Trying 'mysqld' instead."
         sudo service mysqld restart
     fi
 
@@ -174,6 +175,7 @@ DATABASES = {
     fi
 
     echo "Creating new database $dbname ..."
+    echo "Enter the MySQL root password below ..."
     mysql -u root -p -h $dbhost -e "create database ${dbname}; grant all privileges on $dbname.* to '${dbuser}'@'${dbhost}' identified by '${dbpasswd}'"
 
     if [ "$?" == 1 ]
