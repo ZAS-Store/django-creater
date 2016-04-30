@@ -131,6 +131,7 @@ function mysql_issue {
     echo "Check to see if it's starting. Also keep in mind that "
     echo "this script expects the MySQL root user to have a password."
     echo "Exiting."
+    cd ..
     rm -rf $project_name
     exit 1
 }
@@ -167,6 +168,7 @@ DATABASES = {
     fi
 
     echo "Dropping database $dbname ..."
+    echo "Enter the MySQL root password below ..."
     mysql -u root -p -h $dbhost -e "drop database ${dbname}"
 
     if [ "$?" == 1 ]
