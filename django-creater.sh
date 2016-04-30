@@ -28,6 +28,7 @@ function pyenv_not_installed {
     echo 'on your $PATH.'
     echo "Make sure it's installed properly."
     echo "Exiting."
+    cd ..
     rm -rf $project_name
     exit 1
 }
@@ -142,6 +143,15 @@ DATABASES = {
 
     echo "Restarting database ..."
     sudo service mysql restart
+
+    if [ "$?" == 127 ]
+    then
+        echo "ERROR: You don't appear to have privileges to restart the "
+        echo "mysqld service. Exiting."
+        cd ..
+        rm -rf $project_name
+        exit 1
+    fi
 
     echo "Dropping database $dbname ..."
     mysql -u root -p -h $dbhost -e "drop database ${dbname}"
