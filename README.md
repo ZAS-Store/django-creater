@@ -35,7 +35,7 @@ Does the following:
 ## Dependencies:
 
 * Python (of course!)
-* Pyenv
+* (Pyenv (Installation Instructions))[http://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/]
 * Python virtualenv
 * The database server of your choice (Postgresql or MySQL)
 
