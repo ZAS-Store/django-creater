@@ -58,12 +58,12 @@ function setup_python {
         echo "Installing ${python_version} ..."
         pyenv install $python_version
 
-        echo "STATUS IS $?"
+        status=$?
 
-        if [ "$?" == 127 ]
+        if [ "$status" == 127 ]
         then
             pyenv_not_installed
-        elif [ "$?" == 2 ]
+        elif [ "$status" == 2 ]
         then
             echo
             echo "Unable to properly install Python $python_version"
@@ -123,6 +123,8 @@ function install_packages {
     if [ "$?" == 1 ]
     then
         echo "Unable to install django and/or $db_type module. "
+        echo "For MySQL ensure you have mysql-server and mysql-devel installed."
+        echo "For Postgresql ensure you have postgresql-server and postgresql-devel installed."
         echo "Please investigate. Exiting."
         cd ..
         rm -rfv $project_name
