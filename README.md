@@ -26,6 +26,13 @@ Does the following:
 
 * Runs makemigrations and migrate for auth model.
 
+## How do I install it?
+
+```bash
+ wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-creater.sh
+ chmod +x django-creater.sh
+```
+
 ## How do I run it?
 
 ```bash
@@ -36,9 +43,15 @@ Does the following:
 
 * Python (of course!)
 * [Pyenv](http://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/)
-* Python virtualenv
+* Python virtualenv (with recent versions of pyenv virtualenv is included).
 * The database server of your choice (Postgresql or MySQL)
 
 ## Supported:
 
 * Ubuntu 14.04
+
+## FAQs
+
+* How do I set up Postgresql server for Django? Please see [this](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04).
+
+* How do I set up MySQL server for Django? Please see [this](http://www.marinamele.com/taskbuster-django-tutorial/install-and-configure-mysql-for-django).
