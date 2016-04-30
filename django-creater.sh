@@ -42,6 +42,7 @@ function setup_python {
         echo "Pyenv does not appear to be installed."
         echo "You really need it. Install it first."
         echo "Exiting."
+        rm -rf $project_name
         exit 1
     fi
 }
@@ -76,6 +77,13 @@ function install_packages {
     pip install pip --upgrade
 
     pip install django $db_type
+
+    if [ "$?" == 1 ]
+    then
+        echo "Unable to install django and/or $db_type module. Please investigate."
+        rm -rf $project_name
+        exit 1
+    fi
 
     pip freeze > requirements.txt
 
