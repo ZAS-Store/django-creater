@@ -82,8 +82,6 @@ function install_packages {
     then
         echo "Unable to install django and/or $db_type module. Please investigate."
         cd ..
-        echo $(pwd)
-        echo $project_name
         rm -rfv $project_name
         exit 1
     fi
