@@ -105,9 +105,10 @@ function install_packages {
 }
 
 function postgresql_issue {
-    echo "There appears to be a problem with your Postgresql service."
-    echo "Check to see if it's starting. Also keep in mind that "
-    echo "it's possible that 'postgresql' is the wrong service name."
+    echo "There appears to be a problem with your Postgresql setup."
+    echo "Check the following: "
+    echo "* Correct postgresql service name "
+    echo "* You have set up '$dbuser' with proper privileges and access."
     echo "Exiting."
     cd ..
     rm -rf $project_name
