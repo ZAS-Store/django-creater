@@ -128,6 +128,8 @@ DATABASES = {
 
 function mysql_issue {
     echo "There appears to be a problem with your MySQL service."
+    echo "Check to see if it's starting. Also keep in mind that "
+    echo "this script expects the MySQL root user to have a password."
     echo "Exiting."
     rm -rf $project_name
     exit 1
