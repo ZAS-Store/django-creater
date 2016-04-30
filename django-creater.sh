@@ -118,6 +118,15 @@ DATABASES = {
     echo "Restarting database ..."
     sudo service postgresql restart
 
+    if [ "$?" == 127 ]
+    then
+        echo "ERROR: You don't appear to have privileges to restart the "
+        echo "postgresql service. Exiting."
+        cd ..
+        rm -rf $project_name
+        exit 1
+    fi
+
     # Recreate database
     echo "Dropping database $dbname ..."
     sudo -iu postgres dropdb $dbname
