@@ -6,6 +6,9 @@ PYENV_PATH=~/.pyenv/libexec/pyenv
 BROWSER_PATH="/usr/bin/chromium-browser"
 EDITOR_PATH=~/bin/subl
 
+MYSQL_SVC_RS_CMD="sudo service mysqld restart"
+PG_SVC_RS_CMD="sudo service postgresql-9.4 restart"
+
 function create_project {
     echo
     echo "Enter project name: "
@@ -101,6 +104,16 @@ function install_packages {
     echo $project_name > .python-version
 }
 
+function postgresql_issue {
+    echo "There appears to be a problem with your Postgresql service."
+    echo "Check to see if it's starting. Also keep in mind that "
+    echo "it's possible that 'postgresql' is the wrong service name."
+    echo "Exiting."
+    cd ..
+    rm -rf $project_name
+    exit 1
+}
+
 function setup_postgresql {
     echo
     echo "
@@ -115,8 +128,8 @@ DATABASES = {
     }
 }
 " >> $project_name/$project_name/settings.py
-    echo "Restarting database ..."
-    sudo service postgresql restart
+    echo "Restarting database service ..."
+    $PG_SVC_RS_CMD
 
     if [ "$?" == 127 ]
     then
@@ -127,12 +140,22 @@ DATABASES = {
         exit 1
     fi
 
+    if [ "$?" == 1 ]
+    then
+        postgresql_issue
+    fi
+
     # Recreate database
     echo "Dropping database $dbname ..."
     sudo -iu postgres dropdb $dbname
 
     echo "Creating new database $dbname ..."
     sudo -iu postgres createdb -O $dbuser $dbname
+
+    if [ "$?" == 1 ]
+    then
+        postgresql_issue
+    fi
 }
 
 function mysql_issue {
@@ -160,8 +183,8 @@ DATABASES = {
 }
 " >> $project_name/$project_name/settings.py
 
-    echo "Restarting database ..."
-    sudo service mysql restart
+    echo "Restarting database service ..."
+    $MYSQL_SVC_RS_CMD
 
     if [ "$?" == 127 ]
     then
