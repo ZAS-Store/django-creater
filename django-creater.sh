@@ -25,7 +25,7 @@ function create_project {
 
 function pyenv_not_installed {
     echo "Pyenv does not appear to be installed or is inaccessible"
-    echo "on your '$PATH'."
+    echo 'on your $PATH.'
     echo "Make sure it's installed properly."
     echo "Exiting."
     rm -rf $project_name
