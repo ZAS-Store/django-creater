@@ -126,6 +126,13 @@ DATABASES = {
     sudo -iu postgres createdb -O $dbuser $dbname
 }
 
+function mysql_issue {
+    echo "There appears to be a problem with your MySQL service."
+    echo "Exiting."
+    rm -rf $project_name
+    exit 1
+}
+
 function setup_mysql {
     echo
     echo "
@@ -151,13 +158,26 @@ DATABASES = {
         cd ..
         rm -rf $project_name
         exit 1
+    elif [ "$?" == 1 ]
+    then
+        sudo service mysqld restart
     fi
 
     echo "Dropping database $dbname ..."
     mysql -u root -p -h $dbhost -e "drop database ${dbname}"
 
+    if [ "$?" == 1 ]
+    then
+        mysql_issue
+    fi
+
     echo "Creating new database $dbname ..."
     mysql -u root -p -h $dbhost -e "create database ${dbname}; grant all privileges on $dbname.* to '${dbuser}'@'${dbhost}' identified by '${dbpasswd}'"
+
+    if [ "$?" == 1 ]
+    then
+        mysql_issue
+    fi
 }
 
 function create_django_project {
