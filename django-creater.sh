@@ -321,6 +321,9 @@ INSTALLED_APPS.append('common')
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/urls.py
 
     echo "
+
+from django.conf.urls import include
+
 urlpatterns.append(
     url(r'^$', include('common.urls')),
 )
