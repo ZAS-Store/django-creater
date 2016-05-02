@@ -49,6 +49,7 @@ Does the following:
 ## Supported:
 
 * Ubuntu 14.04
+* CentOS 6
 
 ## FAQs
 

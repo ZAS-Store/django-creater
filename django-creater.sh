@@ -3,7 +3,7 @@
 subject=$1
 
 DJANGO_DEV_SERVER_HOST="127.0.0.1:8000"
-PYENV_PATH=~/.pyenv/libexec/pyenv
+PYENV_PATH="$HOME/.pyenv/libexec/pyenv"
 
 POSTGRESQL_SERVICE_NAME="postgresql-9.4"
 
@@ -22,7 +22,7 @@ PG_SVC_RS_CMD="sudo service $POSTGRESQL_SERVICE_NAME restart"
 
 function create_project {
     echo
-    echo "Enter project name: "
+    echo -n "Enter project name: "
     read project_name
 
     if [ -d $project_name ]
@@ -53,7 +53,7 @@ function setup_python {
     if [ -f $PYENV_PATH ]
     then
         echo "Pyenv found ..."
-        echo "Enter Python version for this project: "
+        echo -n "Enter Python version for this project: "
         read python_version
         echo "Installing ${python_version} ..."
         pyenv install $python_version
@@ -95,6 +95,8 @@ function install_packages {
         echo "-- mysqlclient (MySQL)"
         echo "-- psycopg2 (Postgresql)"
         echo "-- None (use builtin SQLite for now -- enter nothing)"
+        echo
+        echo -n ": "
         read db_type
 
         case $db_type in
