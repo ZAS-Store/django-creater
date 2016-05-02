@@ -317,11 +317,21 @@ function create_common_app {
     echo "
 INSTALLED_APPS.append('common')
 " >> $project_name/$project_name/settings.py
+
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/urls.py
+
+    echo "
+urlpatterns.append(
+    url(r'^$', include('common.urls')),
+)
+" >> $project_name/$project_name/urls.py
+
     mv urls.py $project_name/common/.
     mkdir -p $project_name/common/templates/common
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/login.html
-    mv login.html $project_name/common/templates/common
+    mv login.html $project_name/common/templates/common/.
+    wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/index.html
+    mv index.html $project_name/common/templates/common/.
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/views.py
     sed -e s/PROJECT\./$project_name/ views.py > views.tmp.py
     mv views.tmp.py views.py
