@@ -316,6 +316,10 @@ function create_common_app {
     cd ..
     echo "
 INSTALLED_APPS.append('common')
+
+LOGIN_REDIRECT_URL='/'
+LOGIN_URL='/login/'
+
 " >> $project_name/$project_name/settings.py
 
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/urls.py
@@ -325,7 +329,7 @@ INSTALLED_APPS.append('common')
 from django.conf.urls import include
 
 urlpatterns.append(
-    url(r'^$', include('common.urls')),
+    url(r'^', include('common.urls')),
 )
 " >> $project_name/$project_name/urls.py
 
@@ -336,7 +340,7 @@ urlpatterns.append(
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/index.html
     mv index.html $project_name/common/templates/common/.
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/views.py
-    sed -e s/PROJECT\./$project_name/ views.py > views.tmp.py
+    sed -e s/PROJECT\./$project_name\./ views.py > views.tmp.py
     mv views.tmp.py views.py
     mv -f views.py $project_name/common/.
 }
