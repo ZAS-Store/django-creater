@@ -6,12 +6,13 @@ DJANGO_DEV_SERVER_HOST="127.0.0.1:8000"
 PYENV_PATH="$HOME/.pyenv/libexec/pyenv"
 
 POSTGRESQL_SERVICE_NAME="postgresql-9.4"
+POSTGRESQL_SERVICE_NAME="postgresql"
 
 # For RH based distros:
 MYSQL_SERVICE_NAME="mysqld"
 
 # For Debian based distros:
-#MYSQL_SERVICE_NAME="mysql"
+MYSQL_SERVICE_NAME="mysql"
 
 # Entirely optional if you want a browser and editor to start up.
 # BROWSER_PATH="/usr/bin/chromium-browser"
@@ -124,13 +125,20 @@ function install_packages {
 
     if [ "$?" == 1 ]
     then
-        echo "Unable to install django and/or $db_type module. "
-        echo "For MySQL ensure you have mysql-server and mysql-devel installed."
-        echo "For Postgresql ensure you have postgresql-server and postgresql-devel installed."
-        echo "Please investigate. Exiting."
-        cd ..
-        rm -rfv $project_name
-        exit 1
+
+        found_db_type=$(pip freeze | grep $db_type|wc -l)
+        if [ "$found_db_type" -gt 0 ]
+        then
+            echo "INFO: $db_type already installed."
+        else
+            echo "Unable to install django and/or $db_type module. "
+            echo "For MySQL ensure you have mysql-server and mysql-devel installed."
+            echo "For Postgresql ensure you have postgresql-server and postgresql-devel installed."
+            echo "Please investigate. Exiting."
+            cd ..
+            rm -rfv $project_name
+            exit 1
+        fi
     fi
 
     pip freeze > requirements.txt
@@ -302,6 +310,24 @@ os.path.join(BASE_DIR, 'static'),
     fi
 }
 
+function create_common_app {
+    cd $project_name
+    ./manage.py startapp common
+    cd ..
+    echo "
+INSTALLED_APPS.append('common')
+" >> $project_name/$project_name/settings.py
+    wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/urls.py
+    mv urls.py $project_name/common/.
+    mkdir -p $project_name/common/templates/common
+    wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/login.html
+    mv login.html $project_name/common/templates/common
+    wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/views.py
+    sed -e s/PROJECT\./$project_name/ views.py > views.tmp.py
+    mv views.tmp.py views.py
+    mv -f views.py $project_name/common/.
+}
+
 function setup_django {
     echo
     cd $project_name
@@ -325,6 +351,7 @@ case $subject in
         setup_python
         install_packages
         create_django_project
+        create_common_app
         setup_django
     ;;
 
