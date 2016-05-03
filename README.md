@@ -55,6 +55,39 @@ Does the following:
 
 * How do I set up Postgresql server for Django? Please see [this](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04).
 
+On a RHEL/CentOS6 server do:
+
+```bash
+# yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+# yum install postgresql94-server postgresql94-devel postgresql-devel
+# service postgresql-9.4 initdb
+# service postgresql-9.4 start
+# sudo su - postgres
+# psql
+postgres=# create user mydbuser with password 'myPassword';
+postgres=# \q
+# exit
+# vi /var/lib/pgsql/9.4/data/pg_hba.conf
+```
+
+Change this line:
+
+```bash
+host    all             all             127.0.0.1/32            ident
+```
+
+to
+
+```bash
+host    all             all             127.0.0.1/32            md5
+```
+
+Then:
+
+```bash
+# service postgresql-9.4 restart
+```
+
 * How do I set up MySQL server for Django? Please see [this](http://www.marinamele.com/taskbuster-django-tutorial/install-and-configure-mysql-for-django).
 
 On a RHEL/CentOS6 server do:
