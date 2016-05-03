@@ -2,6 +2,8 @@
 
 subject=$1
 
+# To listen on all interfaces you can do:
+# 0.0.0.0:8000
 DJANGO_DEV_SERVER_HOST="127.0.0.1:8000"
 PYENV_PATH="$HOME/.pyenv/libexec/pyenv"
 
@@ -338,7 +340,7 @@ urlpatterns.append(
 )
 " >> $project_name/$project_name/urls.py
 
-    sed -e s/APP_NAME\./$app_name\./ urls.py > urls.tmp.py
+    sed -e s/APP_NAME/$app_name/ urls.py > urls.tmp.py
     mv urls.tmp.py urls.py
 
     mv urls.py $project_name/$app_name/.
@@ -352,8 +354,8 @@ urlpatterns.append(
     sed -e s/PROJECT\./$project_name\./ views.py > views.tmp.py
     mv views.tmp.py views.py
 
-    sed -e s/APP_NAME\./$app_name\./ views.py > views.tmp.py
-    mv view.tmp.py views.py
+    sed -e s/APP_NAME/$app_name/ views.py > views.tmp.py
+    mv views.tmp.py views.py
 
     mv -f views.py $project_name/$app_name/.
 }
