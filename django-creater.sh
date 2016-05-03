@@ -178,7 +178,8 @@ DATABASES = {
     if [ "$?" == 127 ]
     then
         echo "ERROR: You don't appear to have privileges to restart the "
-        echo "postgresql service. Exiting."
+        echo "postgresql service. You may also need to install 'sudo'. "
+        echo "Exiting."
         cd ..
         rm -rf $project_name
         exit 1
@@ -234,14 +235,11 @@ DATABASES = {
     if [ "$?" == 127 ]
     then
         echo "ERROR: You don't appear to have privileges to restart the "
-        echo "mysqld service. Exiting."
+        echo "mysqld service. You may also need to install 'sudo'. "
+        echo "Exiting."
         cd ..
         rm -rf $project_name
         exit 1
-    elif [ "$?" == 1 ]
-    then
-        echo "Trying 'mysqld' instead."
-        sudo service mysqld restart
     fi
 
     echo "Dropping database $dbname ..."

@@ -56,3 +56,13 @@ Does the following:
 * How do I set up Postgresql server for Django? Please see [this](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04).
 
 * How do I set up MySQL server for Django? Please see [this](http://www.marinamele.com/taskbuster-django-tutorial/install-and-configure-mysql-for-django).
+
+On a RHEL/CentOS6 server do:
+
+```bash
+# yum install mysql-server mysql-devel -y
+# service mysqld start
+# mysql -u root
+
+> grant all privileges on *.* to 'root'@'s3cret' identified by 'password';
+```
