@@ -126,19 +126,23 @@ function install_packages {
 
     if [ "$?" == 1 ]
     then
-
-        found_db_type=$(pip freeze | grep $db_type|wc -l)
-        if [ "$found_db_type" -gt 0 ]
+        if [ "$db_type" == "" ]
         then
-            echo "INFO: $db_type already installed."
+            echo "INFO: SQLite selected. No db module needed."
         else
-            echo "Unable to install django and/or $db_type module. "
-            echo "For MySQL ensure you have mysql-server and mysql-devel installed."
-            echo "For Postgresql ensure you have postgresql-server and postgresql-devel installed."
-            echo "Please investigate. Exiting."
-            cd ..
-            rm -rfv $project_name
-            exit 1
+            found_db_type=$(pip freeze | grep $db_type|wc -l)
+            if [ "$found_db_type" -gt 0 ]
+            then
+                echo "INFO: $db_type already installed."
+            else
+                echo "Unable to install django and/or $db_type module. "
+                echo "For MySQL ensure you have mysql-server and mysql-devel installed."
+                echo "For Postgresql ensure you have postgresql-server and postgresql-devel installed."
+                echo "Please investigate. Exiting."
+                cd ..
+                rm -rfv $project_name
+                exit 1
+            fi
         fi
     fi
 
@@ -361,6 +365,12 @@ function setup_django {
     $BROWSER_PATH "http://localhost:8000/admin/" 2>/dev/null
 }
 
+function usage {
+    echo "  USAGE:"
+    echo "  ./django-creater [project]"
+    exit 1
+}
+
 case $subject in
     project)
         create_project
@@ -369,6 +379,9 @@ case $subject in
         create_django_project
         create_common_app
         setup_django
-    ;;
+        ;;
+    "")
+        usage
+        ;;
 
 esac
