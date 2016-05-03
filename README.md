@@ -44,7 +44,7 @@ Does the following:
 * Python (of course!)
 * [Pyenv](http://fgimian.github.io/blog/2014/04/20/better-python-version-and-environment-management-with-pyenv/)
 * Python virtualenv (with recent versions of pyenv virtualenv is included).
-* The database server of your choice (Postgresql or MySQL)
+* The database server of your choice (Postgresql or MySQL) or you can use SQLite if you choose not to use a standard database server.
 
 ## Supported:
 
