@@ -313,12 +313,14 @@ os.path.join(BASE_DIR, 'static'),
     fi
 }
 
-function create_common_app {
+function create_main_app {
     cd $project_name
-    ./manage.py startapp common
+    echo "Enter name of your main app: "
+    read app_name
+    ./manage.py startapp $app_name
     cd ..
     echo "
-INSTALLED_APPS.append('common')
+INSTALLED_APPS.append('$app_name')
 
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'
@@ -332,20 +334,28 @@ LOGIN_URL='/login/'
 from django.conf.urls import include
 
 urlpatterns.append(
-    url(r'^', include('common.urls')),
+    url(r'^', include('$app_name.urls')),
 )
 " >> $project_name/$project_name/urls.py
 
-    mv urls.py $project_name/common/.
-    mkdir -p $project_name/common/templates/common
+    sed -e s/APP_NAME\./$app_name\./ urls.py > urls.tmp.py
+    mv urls.tmp.py urls.py
+
+    mv urls.py $project_name/$app_name/.
+    mkdir -p $project_name/$app_name/templates/$app_name
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/login.html
-    mv login.html $project_name/common/templates/common/.
+    mv login.html $project_name/$app_name/templates/$app_name/.
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/index.html
-    mv index.html $project_name/common/templates/common/.
+    mv index.html $project_name/$app_name/templates/$app_name/.
     wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-files/views.py
+
     sed -e s/PROJECT\./$project_name\./ views.py > views.tmp.py
     mv views.tmp.py views.py
-    mv -f views.py $project_name/common/.
+
+    sed -e s/APP_NAME\./$app_name\./ views.py > views.tmp.py
+    mv view.tmp.py views.py
+
+    mv -f views.py $project_name/$app_name/.
 }
 
 function setup_django {
@@ -377,7 +387,7 @@ case $subject in
         setup_python
         install_packages
         create_django_project
-        create_common_app
+        create_main_app
         setup_django
         ;;
     "")

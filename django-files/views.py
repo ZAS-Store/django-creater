@@ -10,5 +10,5 @@ from PROJECT.settings import LOGIN_URL
 def index(request):
     return render(
         request,
-        'common/index.html',
+        'APP_NAME/index.html',
     )
