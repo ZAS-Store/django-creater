@@ -4,10 +4,10 @@ A simple script to create a Django project for you.
 
 ## What does it do?
 
-Does the following:
+Does the following when issuing at the command line:
 
 ```bash
-./django-creater.sh project
+# ./django-creater.sh project
 ```
 
 * Creates a project directory (main directory to house the Django project directory).
@@ -29,14 +29,14 @@ Does the following:
 ## How do I install it?
 
 ```bash
- wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-creater.sh
- chmod +x django-creater.sh
+# wget https://raw.githubusercontent.com/hseritt/django-creater/master/django-creater.sh
+# chmod +x django-creater.sh
 ```
 
 ## How do I run it?
 
 ```bash
-./django-creater.sh project
+# ./django-creater.sh project
 ```
 
 ## Dependencies:
@@ -64,8 +64,8 @@ On a RHEL/CentOS6 server do:
 # service postgresql-9.4 start
 # sudo su - postgres
 # psql
-postgres=# create user mydbuser with password 'myPassword';
-postgres=# \q
+# postgres=# create user mydbuser with password 'myPassword';
+# postgres=# \q
 # exit
 # vi /var/lib/pgsql/9.4/data/pg_hba.conf
 ```
@@ -73,16 +73,16 @@ postgres=# \q
 Change this line:
 
 ```bash
-host    all             all             127.0.0.1/32            ident
+host    all    all    127.0.0.1/32    ident
 ```
 
 to
 
 ```bash
-host    all             all             127.0.0.1/32            md5
+host    all    all    127.0.0.1/32    md5
 ```
 
-Then:
+Then restart Postgresql:
 
 ```bash
 # service postgresql-9.4 restart
@@ -97,5 +97,5 @@ On a RHEL/CentOS6 server do:
 # service mysqld start
 # mysql -u root
 
-> grant all privileges on *.* to 'root'@'s3cret' identified by 'password';
+# > grant all privileges on *.* to 'root'@'s3cret' identified by 'password';
 ```
